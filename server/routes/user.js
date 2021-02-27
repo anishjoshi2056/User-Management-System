@@ -1,10 +1,15 @@
 const express = require('express');
 const router = express.Router();
-const userControllers = require('../controllers/userController');
-//Routes for create,find,update,delete
-//For Viewing all the data
-router.get('/',userControllers.view);
-//Find the User by Search
-router.post('/',userControllers.find);
-//Exporting the router
+const userController = require('../controllers/userController');
+
+// Routes
+router.get('/', userController.view);
+router.post('/', userController.find);
+router.get('/adduser', userController.form);
+router.post('/adduser', userController.create);
+router.get('/edituser/:id', userController.edit);
+router.post('/edituser/:id', userController.update);
+router.get('/viewuser/:id', userController.viewall);
+router.get('/:id',userController.delete);
+  
 module.exports = router;
