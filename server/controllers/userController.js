@@ -36,7 +36,7 @@ exports.find = (req, res) => {
     console.log('Connected as ID ' + connection.threadId);
     let searchTerm = req.body.search;
     // User the connection
-    connection.query('SELECT * FROM user WHERE first_name LIKE ? OR last_name LIKE ?', ['%' + searchTerm + '%', '%' + searchTerm + '%'], (err, rows) => {
+    connection.query('SELECT * FROM user WHERE first_name LIKE ? OR last_name LIKE ? OR email LIKE ? OR phone LIKE ?', ['%' + searchTerm + '%', '%' + searchTerm + '%','%' + searchTerm +'@%','%'+searchTerm+'%'], (err, rows) => {
       // When done with the connection, release it
       connection.release();
       if (!err) {
@@ -137,39 +137,23 @@ exports.update = (req, res) => {
 exports.delete = (req, res) => {
 
   // Delete a record
-  // pool.getConnection((err, connection) => {
-  //   if(err) throw err; // not connected!
-  //   console.log('Connected as ID ' + connection.threadId);
-
-  //   // User the connection
-  //   connection.query('DELETE FROM user WHERE id = ?', [req.params.id], (err, rows) => {
-  //     // When done with the connection, release it
-  //     connection.release();
-  //     if(!err) {
-  //       res.redirect('/');
-  //     } else {
-  //       console.log(err);
-  //     }
-  //     console.log('The data from user table: \n', rows);
-
-  //   });
-  // });
-
-  // Hide a record
   pool.getConnection((err, connection) => {
-    if (err) throw err;
-    connection.query('UPDATE user SET status = ? WHERE id = ?', ['removed', req.params.id], (err, rows) => {
-      connection.release() // return the connection to pool
-      if (!err) {
-        let removedUser = encodeURIComponent('User successeflly removed.');
-        res.redirect('/?removed=' + removedUser);
+    if(err) throw err; // not connected!
+    console.log('Connected as ID ' + connection.threadId);
+
+    // User the connection
+    connection.query('DELETE FROM user WHERE id = ?', [req.params.id], (err, rows) => {
+      // When done with the connection, release it
+      connection.release();
+      if(!err) {
+        res.redirect('/');
       } else {
         console.log(err);
       }
-      console.log('The data from beer table are: \n', rows);
+      console.log('The data from user table: \n', rows);
+
     });
   });
-
 }
 
 
