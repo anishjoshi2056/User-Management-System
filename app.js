@@ -26,7 +26,7 @@ const pool  = mysql.createPool({
     password        : process.env.DB_PASS,
     database        : process.env.DB_NAME
   });
-
+//Connect to the DB
   pool.getConnection((err, connection) => {
     if(err) throw err; // not connected!
     console.log('connected as id ' + connection.threadId)
