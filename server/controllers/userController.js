@@ -50,7 +50,6 @@ exports.find = (req, res) => {
 }
 
 exports.form = (req, res) => {
-  console.log("red");
   res.render('add-user');
 }
 
@@ -61,8 +60,6 @@ exports.create = (req, res) => {
   pool.getConnection((err, connection) => {
     if (err) throw err; // not connected!
     console.log('Connected as ID ' + connection.threadId);
-    let searchTerm = req.body.search;
-
     // User the connection
     connection.query('INSERT INTO user SET first_name = ?, last_name = ?, email = ?, phone = ?, comments = ?', [first_name, last_name, email, phone, comments], (err, rows) => {
       // When done with the connection, release it
