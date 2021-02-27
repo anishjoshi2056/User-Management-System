@@ -26,3 +26,24 @@ exports.view = (req, res) => {
         });
     });
 }
+//Find user by Search
+exports.find = (req, res) => {
+//Connect to the DB
+pool.getConnection((err, connection) => {
+    if (err) throw err; // not connected!
+    console.log('connected as id ' + connection.threadId);
+
+    const searchTerm = req.body.search;
+
+    connection.query('SELECT * FROM user WHERE first_name LIKE ? OR last_name LIKE ?',['%' + searchTerm + '%','%' + searchTerm + '%'],(err,rows)=> {
+        //When done with the connection,release it
+        connection.release();
+        if(!err){
+           res.render('home',{rows}); 
+        }else{
+            console.log(err)
+        }
+        console.log('The data from the user table :\n',rows)
+    });
+});
+}
